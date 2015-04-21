@@ -1,0 +1,1 @@
+node ./build/script/server.js
