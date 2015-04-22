@@ -1,7 +1,7 @@
-# paircard
- - Find a pair of cards
+## Paircard
+ - Find a pair of cards. (2장의 같은 숫자를 맞추기)  
   
-
+##
  - server : nodejs + Qooxdoo sdk(path:"./server/source/class")  
  - client : cocos2d-x Javascript (HTML5 Canvas)(path:"./server/paircard")  
 
