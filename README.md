@@ -8,5 +8,7 @@
 ##  HISTORY  
 - 04-23-2015  
  bug fix -server- Room Object error when room is disposed. (방삭제시 에러.)  
+ bug fix -server- change start game point. ()  
+ change -project- change project dept, path  
 - 04-21-2015  
  bug fix -server- Room Object don't dispose when user is Disconnect. (유저 퇴장시 방이 안 사라짐.)
