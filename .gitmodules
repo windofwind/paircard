@@ -1,0 +1,4 @@
+[submodule "qooxdoo-4.1-sdk"]
+	path = qooxdoo-4.1-sdk
+	url = https://windofwind@github.com/windofwind/qooxdoo.git
+	branch = 4_1
