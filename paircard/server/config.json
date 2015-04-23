@@ -42,7 +42,7 @@
   "let" :
   {
     "APPLICATION"  : "server",
-    "QOOXDOO_PATH" : "../../qooxdoo-4.1-sdk",
+    "QOOXDOO_PATH" : "../qooxdoo-4.1-sdk",
     "LOCALES"      : [ "en" ],
     "CACHE"        : "${TMPDIR}/qx${QOOXDOO_VERSION}/cache",
     "ROOT"         : "."
