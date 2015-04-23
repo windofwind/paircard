@@ -77,9 +77,8 @@ qx.Class.define("server.game.rooms.Room", {
             user.addListener("message", qx.lang.Function.bind(this._onMessage(user), this));
             user.addListener("disconnect", qx.lang.Function.bind(this._onDisconnect(user), this));
 
-            if (this.__users.length === 2) {
-                this._start();
-            }
+            this._start();
+
         },
 
         removeUser:function(user) {
@@ -125,6 +124,10 @@ qx.Class.define("server.game.rooms.Room", {
         },
 
         _start:function() {
+            if (this.__users.length !== 2) {
+                return;
+            }
+
             this.__gameCard = null;
             this.__userResult = null;
 
