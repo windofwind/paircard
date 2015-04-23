@@ -1,0 +1,3 @@
+[submodule "paircard/qooxdoo-4.1-sdk"]
+	path = paircard/qooxdoo-4.1-sdk
+	url = https://windofwind@github.com/windofwind/qooxdoo.git
