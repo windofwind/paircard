@@ -7,7 +7,11 @@ var Guideline = cc.Layer.extend({
     __colsWidth:50,
     __alphaValue:50,
     ctor:function() {
-        this._super(arguments);
+        this._super();
+    },
+
+    onEnter:function() {
+        this._super();
 
         var winSize = cc.director.getWinSize();
         var height, width;
