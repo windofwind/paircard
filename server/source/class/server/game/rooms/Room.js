@@ -35,6 +35,10 @@ qx.Class.define("server.game.rooms.Room", {
 
         this.__users = [];
         this.__opendCardsIndex = [];
+
+        this.setInfo({
+            id:this.toHashCode()
+        });
     },
 
     /*
@@ -51,6 +55,10 @@ qx.Class.define("server.game.rooms.Room", {
      *****************************************************************************
      */
     properties: {
+        info:{
+            check:"Object",
+            nullable:false
+        }
     },
 
     /*

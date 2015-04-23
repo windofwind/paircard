@@ -31,7 +31,8 @@ qx.Class.define("server.game.rooms.RoomManager", {
     construct: function () {
         this.base(arguments);
 
-        this._rooms = {};
+        this._roomsArray = [];
+        this._roomsMap = {};
         this._users = {};
     },
 
@@ -57,29 +58,46 @@ qx.Class.define("server.game.rooms.RoomManager", {
      *****************************************************************************
      */
     members: {
-        _rooms:null,
+        _roomsArray:null,
+        _roomsMap:null,
+        onChangeRooms:function() {
+            console.log(JSON.stringify(this._roomsArray));
+        },
+
         _addRoom:function(user) {
             var room = new server.game.rooms.Room();
             room.addUser(user);
 
-            this._rooms[room.toHashCode()] = room;
+            this._roomsArray.push(room.getInfo());
+            this._roomsMap[room.toHashCode()] = room;
             this._users[user.getSocketID()] = room;
+
+            this.onChangeRooms();
         },
 
-        _removeRoom:function(item) {
-            if (this._rooms[item.toHashCode()]) {
-                delete this._rooms[item.toHashCode()];
-                item.dispose();
+        _removeRoom:function(room) {
+            if (this._roomsMap[room.toHashCode()]) {
+                delete this._roomsMap[room.toHashCode()];
+
+                var index = this._roomsArray.indexOf(room.getInfo());
+
+                if (index != -1) {
+                    this._roomsArray.splice(index, 1);
+                }
+
+                room.dispose();
+
+                this.onChangeRooms();
             }
 
-            return item;
+            return room;
         },
 
         addUser:function(user) {
             var room;
-            for (var id in this._rooms) {
-                if (this._rooms[id].getAvailableJoinRoom()) {
-                    room = this._rooms[id];
+            for (var id in this._roomsMap) {
+                if (this._roomsMap[id].getAvailableJoinRoom()) {
+                    room = this._roomsMap[id];
                 }
             }
 
