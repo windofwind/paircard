@@ -6,5 +6,7 @@
  - client : cocos2d-x Javascript (HTML5 Canvas)(path:"./server/paircard")  
 
 ##  HISTORY  
+04-23-2015  
+ - bug fix = Room Object error when room is disposed. (방삭제시 에러.)  
 04-21-2015  
- - bug fix - Room object don't dispose when user is Disconnect. (유저 퇴장시 방이 안 사라짐.)
+ - bug fix - Room Object don't dispose when user is Disconnect. (유저 퇴장시 방이 안 사라짐.)
