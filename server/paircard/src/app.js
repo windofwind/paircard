@@ -40,7 +40,7 @@ var PairCard = cc.Scene.extend({
             _turn:false,
             connect:function() {
                 var selfPointer = this;
-                this._conn = io.connect('http://addline.info:3000');
+                this._conn = io.connect('http://addcode.info:3000');
 
                 this._conn.on("connect", function() {
                 });
