@@ -67,13 +67,12 @@ qx.Class.define("server.game.rooms.RoomManager", {
         },
 
         _removeRoom:function(item) {
-            var index = this.__users.indexOf(item);
-
-            if (index != -1)
-            {
-                this.splice(index, 1).dispose();
-                return item;
+            if (this._rooms[item.toHashCode()]) {
+                delete this._rooms[item.toHashCode()];
+                item.dispose();
             }
+
+            return item;
         },
 
         addUser:function(user) {
