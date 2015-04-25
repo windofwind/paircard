@@ -52,6 +52,8 @@ qx.Class.define("server.Application", {
             // server open
             var service = new server.common.WebServer();
             service.open();
+
+            var card = new gamepaircard.game.Object();
         },
 
         /**

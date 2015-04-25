@@ -1,5 +1,5 @@
 {
-  "name"    : "gamepaircard",
+  "name"    : "base",
 
   "include" :
   [
@@ -40,7 +40,7 @@
 
   "let" :
   {
-    "APPLICATION"  : "gamepaircard",
+    "APPLICATION"  : "base",
     "QOOXDOO_PATH" : "../qooxdoo-4.1-sdk",
     "API_EXCLUDE"  : ["qx.test.*", "${APPLICATION}.test.*"],
     "LOCALES"      : [ "en" ],
@@ -94,15 +94,17 @@
     // project; make sure to adapt the path to the Manifest.json; if you are
     // using a contrib: library, it will be downloaded into the path specified
     // by the 'cache/downloads' config key
-
+    /*
     "libraries" :
     {
       "library" :
       [
-        {"manifest" : "../base/Manifest.json"}
+        {
+          "manifest" : "contrib://SkeletonApplication/trunk/Manifest.json"
+        }
       ]
-    }
-
+    },
+    */
 
     // If you want to tweak a job setting, see the following sample where
     // the "format" feature of the "build-script" job is overridden.

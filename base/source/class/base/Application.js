@@ -1,28 +1,29 @@
 /* ************************************************************************
 
- Copyright:
+   Copyright:
 
- License:
+   License:
 
- Authors:
+   Authors:
 
- ************************************************************************ */
+************************************************************************ */
 
 /**
- * This is the main application class of your custom application "gamepaircard"
+ * This is the main application class of your custom application "base"
  *
  * If you have added resources to your app, remove the first '@' in the
  * following line to make use of them.
- * @@asset(gamepaircard/*)
+ * @@asset(base/*)
  */
-qx.Class.define("gamepaircard.Application", {
+qx.Class.define("base.Application",
+{
   extend : qx.application.Native,
 
   /*
-   *****************************************************************************
-   MEMBERS
-   *****************************************************************************
-   */
+  *****************************************************************************
+     MEMBERS
+  *****************************************************************************
+  */
 
   members :
   {
@@ -45,10 +46,10 @@ qx.Class.define("gamepaircard.Application", {
       }
 
       /*
-       -------------------------------------------------------------------------
-       Below is your actual application code...
-       -------------------------------------------------------------------------
-       */
+      -------------------------------------------------------------------------
+        Below is your actual application code...
+      -------------------------------------------------------------------------
+      */
 
       var logger = qx.dom.Element.create("div");
       var loggerStyles = {
