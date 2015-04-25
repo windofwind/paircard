@@ -10,11 +10,8 @@ qx.Class.define("gamepaircard.game.Object", {
      *****************************************************************************
      */
     statics: {
-        STATUS:{
-            NOTRUNNING:0,
-            READY:1,
-            RUNNING:999
-        }
+        JOIN_USER_COUNT:2,
+        SELECT_MAX_PAIRCARD_COUNT:8
     },
 
     /*
@@ -24,10 +21,6 @@ qx.Class.define("gamepaircard.game.Object", {
      */
     construct: function () {
         this.base(arguments);
-
-        this.__user = [];
-        this.__result = {};
-        this.__status = this.self(arguments).STATUS.NOTRUNNING;
     },
 
     /*
@@ -52,21 +45,24 @@ qx.Class.define("gamepaircard.game.Object", {
      *****************************************************************************
      */
     members: {
-        __result:null,
-        __status:null,
         start:function(user) {
             // start Game Check;
+
+            this.addUser(user);
+
+            if (this.getUsers().length !== 2) {
+                return;
+            }
+
+            console.log("Start Game!!!!!");
         },
 
-        addUser:function() {},
-        removeUser:function() {},
-
-        getResult:function() {
-            return this.__result;
+        getAvailableJoinRoom:function() {
+            return this.getUsers().length < this.self(arguments).JOIN_USER_COUNT + 1;
         }
     },
 
     destruct: function () {
-        this.removeAllUsers();
+        this.base(arguments);
     }
 });

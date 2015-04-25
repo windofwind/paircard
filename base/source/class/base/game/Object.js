@@ -2,6 +2,7 @@
  * Created by Wind on 4/25/15.
  */
 qx.Class.define("base.game.Object", {
+    //type:"",
     extend: qx.core.Object,
 
     /*
@@ -25,7 +26,7 @@ qx.Class.define("base.game.Object", {
     construct: function () {
         this.base(arguments);
 
-        this.__user = [];
+        this.__users = [];
         this.__status = this.self(arguments).STATUS.NOTRUNNING;
     },
 
@@ -51,21 +52,33 @@ qx.Class.define("base.game.Object", {
      *****************************************************************************
      */
     members: {
-        __result:null,
-        __status:null,
+        __users:null,
         start:function(user) {
-            // start Game Check;
         },
 
-        addUser:function() {},
-        removeUser:function() {},
+        addUser:function(user) {
+            this.__users.push(user);
+        },
 
-        getResult:function() {
-            return this.__result;
+        removeUser:function(user) {
+            var index = this.__users.indexOf(user);
+
+            if (index != -1) {
+                return this.__users.splice(index, 1);
+            }
+        },
+
+        getUsers:function() {
+            return this.__users;
+        },
+
+        getAvailableJoinRoom:function() {
         }
     },
 
     destruct: function () {
-        this.removeAllUsers();
+        while(this.__users.length > 0) {
+            this.__users.pop();
+        }
     }
 });
