@@ -1,19 +1,12 @@
 /**
- * Created by Wind on 4/20/15.
- */
-
-/**
- * @ignore(process.*)
- * @ignore(require)
- * @ignore(global.*)
- * @ignore(Application.*)
+ * Created by Wind on 4/25/15.
  */
 
 // TODO : 게임관련 오브젝트 server.game.GameObject 로 이동
 // TODO : 중복된 로직 제거.
 
-qx.Class.define("server.game.rooms.Room", {
-    extend: gamepaircard.game.rooms.Room,
+qx.Class.define("gamepaircard.game.rooms.Room", {
+    extend: qx.core.Object,
 
     /*
      *****************************************************************************
@@ -21,8 +14,6 @@ qx.Class.define("server.game.rooms.Room", {
      *****************************************************************************
      */
     statics: {
-        JOIN_USER_COUNT:2,
-        SELECT_MAX_PAIRCARD_COUNT:8,
         STATUS:{
             NOTRUNNING:0,
             READY:1,
@@ -38,12 +29,12 @@ qx.Class.define("server.game.rooms.Room", {
     construct: function () {
         this.base(arguments);
 
-        this.__users = [];
-        this.__opendCardsIndex = [];
-
         this.setInfo({
             id:this.toHashCode()
         });
+
+        this.__users = [];
+        this.__opendCardsIndex = [];
     },
 
     /*
@@ -60,15 +51,6 @@ qx.Class.define("server.game.rooms.Room", {
      *****************************************************************************
      */
     properties: {
-        info:{
-            check:"Object",
-            nullable:false
-        },
-
-        gameObject:{
-            check:"base.game.Object",
-            nullable:false
-        }
     },
 
     /*

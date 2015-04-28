@@ -65,7 +65,7 @@ qx.Class.define("server.game.rooms.RoomManager", {
         },
 
         _addRoom:function(user) {
-            var room = new server.game.rooms.Room();
+            var room = new gamepaircard.game.rooms.Room();
             room.addUser(user);
 
             this._roomsArray.push(room.getInfo());
