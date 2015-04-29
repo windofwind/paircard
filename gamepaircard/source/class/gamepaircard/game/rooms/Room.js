@@ -18,7 +18,10 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
             NOTRUNNING:0,
             READY:1,
             RUNNING:999
-        }
+        },
+
+        JOIN_USER_COUNT:2,
+        SELECT_MAX_PAIRCARD_COUNT:8
     },
 
     /*
@@ -29,13 +32,12 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
     construct: function () {
         this.base(arguments);
 
+        this.__users = [];
+        this.__opendCardsIndex = [];
+
         this.setInfo({
             id:this.toHashCode()
         });
-
-        this.setGameObject(new gamepaircard.game.Object());
-
-        this.__opendCardsIndex = [];
     },
 
     /*
@@ -53,14 +55,12 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
      */
     properties: {
         info:{
-            init:null,
             check:"Object",
             nullable:false
         },
 
         gameObject:{
-            init:null,
-            check:"gamepaircard.game.Object",
+            check:"base.game.Object",
             nullable:false
         }
     },
@@ -81,20 +81,24 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
         __cardSeletCount:null,
         __userResult:null,
         getAvailableJoinRoom:function() {
-            return this.getGameObject().getAvailableJoinRoom();
+            return this.__users.length < this.self(arguments).JOIN_USER_COUNT + 1;
         },
 
         addUser:function(user) {
+            this.__users.push(user);
             user.addListener("message", qx.lang.Function.bind(this._onMessage(user), this));
             user.addListener("disconnect", qx.lang.Function.bind(this._onDisconnect(user), this));
 
-            var gameObject = this.getGameObject();
-            gameObject.addUser(user);
             this._start();
         },
 
         removeUser:function(user) {
-            return this.getGameObject().removeUser(user);
+            var index = this.__users.indexOf(user);
+
+            if (index != -1) {
+                this.__users.splice(index, 1);
+                return user;
+            }
         },
 
         _onMessage:function(user) {
@@ -131,7 +135,7 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
         },
 
         _start:function() {
-            if (this.getGameObject().getUsers().length !== 2) {
+            if (this.__users.length !== 2) {
                 return;
             }
 
@@ -153,7 +157,7 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
 
                 var selfPointer = this;
                 this.__userResult = {};
-                this.getGameObject().getUsers().forEach(function(data, index, array) {
+                this.__users.forEach(function(data, index, array) {
                     selfPointer.__userResult[data.getSocket().id] = {
                         turnCount:0,
                         rightCard:[],
@@ -210,7 +214,7 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
         },
 
         _sendMessageAllUser:function(message) {
-            this.getGameObject().getUsers().forEach(qx.lang.Function.bind(function(user, index, array) {
+            this.__users.forEach(qx.lang.Function.bind(function(user, index, array) {
                 user.sendMessage(message);
             }, this));
         },
@@ -239,10 +243,10 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
             var index;
 
             try {
-                index = this.getGameObject().getUsers().indexOf(this.__turnUser);
+                index = this.__users.indexOf(this.__turnUser);
 
                 if (index != -1) {
-                    return this.getGameObject().getUsers()[++index % 2];
+                    return this.__users[++index % 2];
                 }
             }
             catch(e) {
@@ -302,17 +306,17 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
 
         _checkTurn:function() {
             if (!this.__winUser) {
-                this.__turnUser = this.getGameObject().getUsers()[0];
+                this.__turnUser = this.__users[0];
             }
             else {
                 this.__turnUser = this.__winUser;
             }
         },
         _nextTurn:function() {
-            var index = this.getGameObject().getUsers().indexOf(this.__turnUser);
+            var index = this.__users.indexOf(this.__turnUser);
 
             if (index != -1) {
-                this.__turnUser = this.getGameObject().getUsers()[++index % 2];
+                this.__turnUser = this.__users[++index % 2];
             }
 
             this._sendTurn();
@@ -335,7 +339,7 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
         },
 
         getUserCount:function() {
-            return this.getGameObject().getUsers().length;
+            return this.__users.length;
         }
     },
 
@@ -346,7 +350,8 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
         this.__gameCard = null;
         this.__userResult = null;
 
-        this.getGameObject.dispose();
-        this.reset("gameObject");
+        while(this.__users.length > 0) {
+            this.__users.pop();
+        }
     }
 });
