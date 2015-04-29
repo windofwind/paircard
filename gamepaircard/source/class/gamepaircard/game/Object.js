@@ -2,7 +2,7 @@
  * Created by Wind on 4/25/15.
  */
 qx.Class.define("gamepaircard.game.Object", {
-    extend: base.game.Object,
+    extend: qx.core.Object,
 
     /*
      *****************************************************************************
@@ -21,6 +21,9 @@ qx.Class.define("gamepaircard.game.Object", {
      */
     construct: function () {
         this.base(arguments);
+
+        this.__users = [];
+        this.__opendCardsIndex = [];
     },
 
     /*
@@ -48,7 +51,9 @@ qx.Class.define("gamepaircard.game.Object", {
         start:function(user) {
             // start Game Check;
 
-            this.addUser(user);
+            if (user) {
+                this.addUser(user);
+            }
 
             if (this.getUsers().length !== 2) {
                 return;
@@ -59,10 +64,30 @@ qx.Class.define("gamepaircard.game.Object", {
 
         getAvailableJoinRoom:function() {
             return this.getUsers().length < this.self(arguments).JOIN_USER_COUNT + 1;
+        },
+
+        addUser:function(user) {
+            this.__users.push(user);
+        },
+
+        removeUser:function(user) {
+            var index = this.__users.indexOf(user);
+
+            if (index != -1) {
+                this.__users.splice(index, 1);
+                return user;
+            }
+            return this.getGameObject().removeUser(user);
+        },
+
+        getUsers:function() {
+            return this.__users;
         }
     },
 
     destruct: function () {
-        this.base(arguments);
+        while(this.__users.length > 0) {
+            this.__users.pop();
+        }
     }
 });

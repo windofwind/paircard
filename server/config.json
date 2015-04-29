@@ -79,7 +79,6 @@
       "library" :
       [
         {"manifest" : "${QOOXDOO_PATH}/framework/Manifest.json"},
-        {"manifest" : "../base/Manifest.json"},
         {"manifest" : "../gamepaircard/Manifest.json"}
       ],
 

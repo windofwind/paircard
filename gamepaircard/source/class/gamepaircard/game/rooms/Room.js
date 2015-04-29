@@ -33,7 +33,8 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
             id:this.toHashCode()
         });
 
-        this.__users = [];
+        this.setGameObject(new gamepaircard.game.Object());
+
         this.__opendCardsIndex = [];
     },
 
@@ -51,6 +52,17 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
      *****************************************************************************
      */
     properties: {
+        info:{
+            init:null,
+            check:"Object",
+            nullable:false
+        },
+
+        gameObject:{
+            init:null,
+            check:"gamepaircard.game.Object",
+            nullable:false
+        }
     },
 
     /*
@@ -78,7 +90,7 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
 
             var gameObject = this.getGameObject();
             gameObject.addUser(user);
-            gameObject._start();
+            this._start();
         },
 
         removeUser:function(user) {
@@ -119,7 +131,7 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
         },
 
         _start:function() {
-            if (this.__users.length !== 2) {
+            if (this.getGameObject().getUsers().length !== 2) {
                 return;
             }
 
@@ -141,7 +153,7 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
 
                 var selfPointer = this;
                 this.__userResult = {};
-                this.__users.forEach(function(data, index, array) {
+                this.getGameObject().getUsers().forEach(function(data, index, array) {
                     selfPointer.__userResult[data.getSocket().id] = {
                         turnCount:0,
                         rightCard:[],
@@ -190,7 +202,7 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
                     totalCount += this.__userResult[id].rightCard.length;
                 }
 
-                if (server.game.rooms.Room.SELECT_MAX_PAIRCARD_COUNT === totalCount) {
+                if (gamepaircard.game.rooms.Room.SELECT_MAX_PAIRCARD_COUNT === totalCount) {
                     console.log(this.__userResult);
                     this._end();
                 }
@@ -198,7 +210,7 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
         },
 
         _sendMessageAllUser:function(message) {
-            this.__users.forEach(qx.lang.Function.bind(function(user, index, array) {
+            this.getGameObject().getUsers().forEach(qx.lang.Function.bind(function(user, index, array) {
                 user.sendMessage(message);
             }, this));
         },
@@ -227,10 +239,10 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
             var index;
 
             try {
-                index = this.__users.indexOf(this.__turnUser);
+                index = this.getGameObject().getUsers().indexOf(this.__turnUser);
 
                 if (index != -1) {
-                    return this.__users[++index % 2];
+                    return this.getGameObject().getUsers()[++index % 2];
                 }
             }
             catch(e) {
@@ -290,17 +302,17 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
 
         _checkTurn:function() {
             if (!this.__winUser) {
-                this.__turnUser = this.__users[0];
+                this.__turnUser = this.getGameObject().getUsers()[0];
             }
             else {
                 this.__turnUser = this.__winUser;
             }
         },
         _nextTurn:function() {
-            var index = this.__users.indexOf(this.__turnUser);
+            var index = this.getGameObject().getUsers().indexOf(this.__turnUser);
 
             if (index != -1) {
-                this.__turnUser = this.__users[++index % 2];
+                this.__turnUser = this.getGameObject().getUsers()[++index % 2];
             }
 
             this._sendTurn();
@@ -323,7 +335,7 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
         },
 
         getUserCount:function() {
-            return this.__users.length;
+            return this.getGameObject().getUsers().length;
         }
     },
 
@@ -334,8 +346,7 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
         this.__gameCard = null;
         this.__userResult = null;
 
-        while(this.__users.length > 0) {
-            this.__users.pop();
-        }
+        this.getGameObject.dispose();
+        this.reset("gameObject");
     }
 });
