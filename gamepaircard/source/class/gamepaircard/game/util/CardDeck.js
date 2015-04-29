@@ -1,5 +1,5 @@
 /**
- * Created by Wind on 4/21/15.
+ * Created by Wind on 4/20/15.
  */
 /**
  * @ignore(process.*)
@@ -8,7 +8,8 @@
  * @ignore(Application.*)
  */
 
-qx.Class.define("server.game.GameObject", {
+qx.Class.define("gamepaircard.game.util.CardDeck", {
+    type:"singleton",
     extend: qx.core.Object,
 
     /*
@@ -17,11 +18,7 @@ qx.Class.define("server.game.GameObject", {
      *****************************************************************************
      */
     statics: {
-        STATUS:{
-            NOTRUNNING:0,
-            READY:1,
-            RUNNING:999
-        }
+        CARD_MAX_COUNT:8
     },
 
     /*
@@ -31,9 +28,6 @@ qx.Class.define("server.game.GameObject", {
      */
     construct: function () {
         this.base(arguments);
-
-        this.__result = {};
-        this.__status = this.self(arguments).STATUS.NOTRUNNING;
     },
 
     /*
@@ -58,10 +52,43 @@ qx.Class.define("server.game.GameObject", {
      *****************************************************************************
      */
     members: {
-        __result:null,
-        __status:null,
-        getResult:function() {
-            return this.__result;
+        _cards:function() {
+            var card = [];
+
+            for(var i = 0; i < 16; i++) {
+                card.push(i % this.self(arguments).CARD_MAX_COUNT + 1 );
+            }
+
+            return card;
+        },
+
+        _cardsShuffle:function() {
+            var holder,
+                deck,
+                dl,
+                nt1, nt2;
+
+            try {
+                deck = this._cards();
+
+                return deck;
+                for (var i = 0; i < 3 * deck.length; i++) {
+                    nt1 = Math.floor(Math.random()*deck.length);
+                    nt2 = Math.floor(Math.random()*deck.length);
+                    holder = deck[nt1];
+                    deck[nt1] = deck[nt2];
+                    deck[nt2] = holder;
+                }
+            }
+            catch(e) {
+                this.error(e.message);
+            }
+
+            return deck;
+        },
+
+        getCardDeck:function() {
+            return this._cardsShuffle();
         }
     },
 

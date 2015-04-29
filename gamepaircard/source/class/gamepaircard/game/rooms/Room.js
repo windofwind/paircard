@@ -143,7 +143,7 @@ qx.Class.define("gamepaircard.game.rooms.Room", {
             this.__userResult = null;
 
             setTimeout(qx.lang.Function.bind(function() {
-                this.__gameCard = server.game.util.CardDeck.getInstance().getCardDeck();
+                this.__gameCard = gamepaircard.game.util.CardDeck.getInstance().getCardDeck();
                 this.__opendCardsIndex = [];
 
                 this._checkTurn();

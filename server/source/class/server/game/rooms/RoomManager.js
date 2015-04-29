@@ -1,15 +1,6 @@
 /**
  * Created by Wind on 4/20/15.
  */
-/**
- * Created by wind on 3/26/15.
- */
-/**
- * @ignore(process.*)
- * @ignore(require)
- * @ignore(global.*)
- * @ignore(Application.*)
- */
 
 qx.Class.define("server.game.rooms.RoomManager", {
     type:"singleton",
