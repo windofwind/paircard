@@ -9,6 +9,7 @@ var PairCardLayer = cc.Layer.extend({
     __firstCardY:450,
     __cols:4,
     __rows:4,
+    __title:null,
 
     ctor:function () {
         this._super();
@@ -19,6 +20,13 @@ var PairCardLayer = cc.Layer.extend({
 
     onEnter:function() {
         this._super();
+
+        this.__title = new cc.LabelTTF("0", "Arial", 28);
+        this.__title.setString("짝맞추기 게임");
+        this.__title.setPosition(this.width / 2, this.height - this.__title.height / 2);
+        this.addChild(this.__title);
+
+
         for (var i = 0; i < this.__rows; ++i) {
             for (var j = 0; j < this.__cols; ++j) {
                 var card = new Card(i * this.__rows + j + "");
@@ -31,86 +39,12 @@ var PairCardLayer = cc.Layer.extend({
                 card.setOpenCallback(this.onOpenCardBefore(card).bind(this));
             }
         }
-
-//        var btn = new Button(res.ButtonBlack_png, "Card In");
-//        btn.setPosition(500, 420);
-//        btn.setOnClick(this.onButtionClick(btn.getName()).bind(this));
-//        this.addChild(btn);
-//
-//        var btn = new Button(res.ButtonBlack_png, "Card Out");
-//        btn.setPosition(500, 420 - btn.height - 10);
-//        btn.setOnClick(this.onButtionClick(btn.getName()).bind(this));
-//        this.addChild(btn);
-//
-//        var btn = new Button(res.ButtonBlack_png, "Card Flip");
-//        btn.setPosition(500, 420 - btn.height * 2 - 20);
-//        btn.setOnClick(this.onButtionClick(btn.getName()).bind(this));
-//        this.addChild(btn);
-//
-//        var btn = new Button(res.ButtonBlack_png, "Card Shuffle");
-//        btn.setPosition(500, 420 - btn.height * 3 - 30);
-//        btn.setOnClick(this.onButtionClick(btn.getName()).bind(this));
-//        this.addChild(btn);
-//
-//        var btn = new Button(res.ButtonBlack_png, "test1");
-//        btn.setPosition(500, 420 - btn.height * 4 - 40);
-//        btn.setOnClick(this.onButtionClick(btn.getName()).bind(this));
-//        this.addChild(btn);
-//
-//        var btn = new Button(res.ButtonBlack_png, "test2");
-//        btn.setPosition(600, 420);
-//        btn.setOnClick(this.onButtionClick(btn.getName()).bind(this));
-//        this.addChild(btn);
-//
-//        var btn = new Button(res.ButtonBlack_png, "test3");
-//        btn.setPosition(600, 420 - btn.height - 10);
-//        btn.setOnClick(this.onButtionClick(btn.getName()).bind(this));
-//        this.addChild(btn);
     },
 
     // Opened two card check
     onOpenCardBefore:function(card) {
         return function() {
             Connection.openCard(card.getName());
-        }
-    },
-
-    onButtionClick:function(buttonID) {
-        return function() {
-            switch(buttonID) {
-                case "Card In":
-                    this.cardIn();
-                    break;
-
-                case "Card Out":
-                    this.__cards.forEach(function(data, index, array) {
-                        data.animationOut();
-                    });
-                    break;
-
-                case "Card Flip":
-                    this.__cards.forEach(function(data, index, array) {
-                        data.animationFlip(true);
-                    });
-                    break;
-
-                case "Card Shuffle":
-                    var holder;
-                    var dl = this.__cards.length;
-                    var nt1, nt2;
-                    for (var i = 0; i < 3*dl; i++) {
-                        nt1 = Math.floor(Math.random()*dl);
-                        nt2 = Math.floor(Math.random()*dl);
-                        holder = this.__cards[nt1].getCardNum() % (dl / 2);
-                        this.__cards[nt1].setCardNum(this.__cards[nt2].getCardNum() % (dl / 2));
-                        this.__cards[nt2].setCardNum(holder);
-                    }
-                    break;
-
-                default:
-                    console.error(buttonID, "undefined Button Actions!");
-                    break;
-            }
         }
     },
 
